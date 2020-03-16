@@ -14,9 +14,7 @@ class MainController extends Controller
         error_log("data" . json_encode($data));
         // echo json_encode($data);
         $id = $data["entry"][0]["messaging"][0]["sender"]["id"];
-        $read = $data["entry"][0]["messaging"][0]["read"]["watermark"];
 
-        $recipientId = $data["entry"][0]["messaging"][0]["recipient"]["id"];
 
 
         if (!empty($data["entry"][0]["messaging"][0]["message"])) {
