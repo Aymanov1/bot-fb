@@ -11,7 +11,6 @@ class MainController extends Controller
     {
         $data = $request->all();
         //get the user’s id
-        //error_log($data);
         error_log("data" . json_encode($data));
         echo json_encode($data);
         $id = $data["entry"][0]["messaging"][0]["sender"]["id"];
@@ -23,6 +22,7 @@ class MainController extends Controller
             $this->sendReply($id, "hello Hello");
         }
 
+        $this->getStatusTextMessage($recipientId, $id);
         error_log("id" . $id . "recipient" . $recipientId);
     }
 
@@ -55,19 +55,20 @@ class MainController extends Controller
             ],
             "recipient" => [
                 "id" => $recipientId
-            ],
-            "read" => [
-                "watermark" => $recipientId
             ]
 
+
         ];
+
+
         $ch = curl_init('https://graph.facebook.com/v6.0/me/message_reads?access_token=' . env("PAGE_ACCESS_TOKEN"));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HEADER, false);
         curl_setopt($ch, CURLOPT_HTTPHEADER, ["Content-Type: application/json"]);
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($messageData));
-        curl_exec($ch);
+        $output = curl_exec($ch);
+        error_log($output);
     }
 
 
