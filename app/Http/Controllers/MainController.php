@@ -12,8 +12,10 @@ class MainController extends Controller
         $data = $request->all();
         //get the user’s id
         $id = $data["entry"][0]["messaging"][0]["sender"]["id"];
-        if (!empty($data["entry"][0]["messaging"][0]["message"]))
+        if (!empty($data["entry"][0]["messaging"][0]["message"])) {
             $this->sendTextMessage($id, "Hello");
+            $this->sendReply($id, $data["entry"][0]["messaging"][0]["message"]);
+        }
     }
 
     private function sendTextMessage($recipientId, $messageText)
