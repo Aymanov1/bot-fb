@@ -12,12 +12,18 @@ class MainController extends Controller
         $data = $request->all();
         //get the user’s id
         //error_log($data);
+        error_log("data" . json_encode($data));
         echo json_encode($data);
         $id = $data["entry"][0]["messaging"][0]["sender"]["id"];
+        $recipientId = $data["entry"][0]["messaging"][0]["recipient"]["id"];
+
+
         if (!empty($data["entry"][0]["messaging"][0]["message"])) {
             $this->sendTextMessage($id, "Hello");
             $this->sendReply($id, "hello Hello");
         }
+
+        error_log("id" . $id . "recipient" . $recipientId);
     }
 
     private function sendTextMessage($recipientId, $messageText)
