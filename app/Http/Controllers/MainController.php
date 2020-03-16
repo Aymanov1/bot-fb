@@ -24,9 +24,9 @@ class MainController extends Controller
             $this->sendReply($id, "hello Hello");
         }
 
-        if ($read != null) {
-            $this->sendTextMessage($id, "ya 7aggar");
-            $this->sendReply($id, "haha 9ritou lmessage");
+        if (!empty($data["entry"][0]["messaging"][0]["read"]["watermark"])) {
+            $this->sendTextMessage($recipientId, "ya 7aggar");
+            $this->sendReply($recipientId, "haha 9ritou lmessage");
         }
     }
 
