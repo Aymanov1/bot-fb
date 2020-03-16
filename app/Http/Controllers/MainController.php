@@ -29,9 +29,9 @@ class MainController extends Controller
         }
 
         if (!empty($data["entry"][0]["messaging"][0]["read"]["watermark"])) {
-                $this->sendTextMessage($id, "ya 7aggar");
+               // $this->sendTextMessage($id, "ya 7aggar");
                 $this->sendReply($id, "haha 9ritou lmessage");
-
+                sleep(10000);
         }
     }
 
