@@ -24,19 +24,13 @@ class MainController extends Controller
 
 
         if (!empty($data["entry"][0]["messaging"][0]["message"])) {
-            $this->sent=false;
-            $this->sendTextMessage($id, "Hello");
+            //$this->sendTextMessage($id, "Hello");
             $this->sendReply($id, "hello Hello");
         }
 
         if (!empty($data["entry"][0]["messaging"][0]["read"]["watermark"])) {
-
-            if($this->sent==false)
-            {
                 $this->sendTextMessage($id, "ya 7aggar");
                 $this->sendReply($id, "haha 9ritou lmessage");
-                $this->sent=true;
-            }
 
         }
     }
