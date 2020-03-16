@@ -7,6 +7,12 @@ use Illuminate\Http\Request;
 class MainController extends Controller
 {
     //
+
+    public function __construct()
+    {
+    $sent=false;
+
+    }
     public function receive(Request $request)
     {
         $data = $request->all();
@@ -23,10 +29,12 @@ class MainController extends Controller
         }
 
         if (!empty($data["entry"][0]["messaging"][0]["read"]["watermark"])) {
-            if (!empty($data["entry"][0]["messaging"][0]["message"])) {
+
+            if(!$this->sent)
+            {
                 $this->sendTextMessage($id, "ya 7aggar");
                 $this->sendReply($id, "haha 9ritou lmessage");
-
+                $this->sent=true;
             }
 
         }
