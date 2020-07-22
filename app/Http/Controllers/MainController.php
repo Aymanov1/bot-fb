@@ -34,7 +34,7 @@ class MainController extends Controller
         ) {
             //$this->sendTextMessage($id, "Hello");
             $this->sendReply($id, "user sends location");
-            $this->sendReply($id, "user is in lat= " . $data["entry"][0]["messaging"][0]["message"]["attachments"][0]["payload"]["coordinates"]["lat"] .  "and long is = " . $data["entry"][0]["messaging"][0]["message"]["attachments"]["payload"]["coordinates"]["long"]);
+            $this->sendReply($id, "user is in lat= " . $data["entry"][0]["messaging"][0]["message"]["attachments"][0]["payload"]["coordinates"]["lat"] .  "and long is = " . $data["entry"][0]["messaging"][0]["message"]["attachments"][0]["payload"]["coordinates"]["long"]);
         }
 
 
