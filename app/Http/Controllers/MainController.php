@@ -22,10 +22,10 @@ class MainController extends Controller
 
 
 
-        if (!empty($data["entry"][0]["messaging"][0]["message"])) {
-            //$this->sendTextMessage($id, "Hello");
-            $this->sendReply($id, "hello Hello");
-        }
+        // if (!empty($data["entry"][0]["messaging"][0]["message"])) {
+        //     //$this->sendTextMessage($id, "Hello");
+        //     $this->sendReply($id, "hello Hello");
+        // }
 
 
         if (
