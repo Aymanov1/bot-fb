@@ -10,8 +10,7 @@ class MainController extends Controller
 
     public function __construct()
     {
-    $sent=false;
-
+        $sent = false;
     }
     public function receive(Request $request)
     {
@@ -28,11 +27,11 @@ class MainController extends Controller
             $this->sendReply($id, "hello Hello");
         }
 
-        if (!empty($data["entry"][0]["messaging"][0]["read"]["watermark"])) {
-               // $this->sendTextMessage($id, "ya 7aggar");
-                $this->sendReply($id, "haha 9ritou lmessage");
-                sleep(10000);
-        }
+        // if (!empty($data["entry"][0]["messaging"][0]["read"]["watermark"])) {
+        //        // $this->sendTextMessage($id, "ya 7aggar");
+        //         $this->sendReply($id, "haha 9ritou lmessage");
+        //         sleep(10000);
+        // }
     }
 
     private function sendTextMessage($recipientId, $messageText)
