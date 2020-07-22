@@ -22,17 +22,21 @@ class MainController extends Controller
 
 
 
-
+        // if (!empty($data["entry"][0]["messaging"][0]["message"])) {
+        //     //$this->sendTextMessage($id, "Hello");
+        //     $this->sendReply($id, "hello Hello");
+        // }
 
 
         if (
             !empty($data["entry"][0]["messaging"][0]["message"]) &&
-            $data["entry"][0]["messaging"][0]["message"]["attachments"]["type"] == "location"
+            $data["entry"][0]["messaging"][0]["message"]["attachments"][0]["type"] == "location"
         ) {
             //$this->sendTextMessage($id, "Hello");
             $this->sendReply($id, "user sends location");
-            $this->sendReply($id, "user is in lat= " . $data["entry"][0]["messaging"][0]["message"]["attachments"]["payload"]["coordinates"]["lat"] .  "and long is = " . $data["entry"][0]["messaging"][0]["message"]["attachments"]["payload"]["coordinates"]["long"]);
+            $this->sendReply($id, "user is in lat= " . $data["entry"][0]["messaging"][0]["message"]["attachments"][0]["payload"]["coordinates"]["lat"] .  "and long is = " . $data["entry"][0]["messaging"][0]["message"]["attachments"]["payload"]["coordinates"]["long"]);
         }
+
 
         // if (!empty($data["entry"][0]["messaging"][0]["read"]["watermark"])) {
         //        // $this->sendTextMessage($id, "ya 7aggar");
