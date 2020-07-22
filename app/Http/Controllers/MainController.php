@@ -27,6 +27,16 @@ class MainController extends Controller
             $this->sendReply($id, "hello Hello");
         }
 
+
+        if (
+            !empty($data["entry"][0]["messaging"][0]["message"]["attachments"]) &&
+            $data["entry"][0]["messaging"][0]["message"]["attachments"]["type"] == "location"
+        ) {
+            //$this->sendTextMessage($id, "Hello");
+            $this->sendReply($id, "user sends location");
+            $this->sendReply($id, "user is in lat= " . $data["entry"][0]["messaging"][0]["message"]["attachments"]["payload"]["coordinates"]["lat"] .  "and long is = " . $data["entry"][0]["messaging"][0]["message"]["attachments"]["payload"]["coordinates"]["long"]);
+        }
+
         // if (!empty($data["entry"][0]["messaging"][0]["read"]["watermark"])) {
         //        // $this->sendTextMessage($id, "ya 7aggar");
         //         $this->sendReply($id, "haha 9ritou lmessage");
