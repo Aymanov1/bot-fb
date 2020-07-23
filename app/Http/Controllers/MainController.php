@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Bot\Webhook\Entry;
+use App\Jobs\BotHandler;
+use Illuminate\Support\Facades\Log;
 
 class MainController extends Controller
 {
@@ -14,6 +17,21 @@ class MainController extends Controller
     }
     public function receive(Request $request)
     {
+
+        $entries = Entry::getEntries($request);
+        Log::info(print_r($entries, true));
+        foreach ($entries as $entry) {
+            $messagings = $entry->getMessagings();
+            foreach ($messagings as $messaging) {
+                dispatch(new BotHandler($messaging));
+            }
+        }
+        return response("", 200);
+    }
+
+    public function multiFunction(Request $request)
+    {
+
         $data = $request->all();
         //get the user’s id
         error_log("data" . json_encode($data));
@@ -27,17 +45,18 @@ class MainController extends Controller
         //     $this->sendReply($id, "hello Hello");
         // }
 
-
+        // get location of the user
         if (
             !empty($data["entry"][0]["messaging"][0]["message"]) &&
             $data["entry"][0]["messaging"][0]["message"]["attachments"][0]["type"] == "location"
         ) {
             //$this->sendTextMessage($id, "Hello");
             $this->sendReply($id, "user sends location");
-            $this->sendReply($id, "user is in lat= " . $data["entry"][0]["messaging"][0]["message"]["attachments"][0]["payload"]["coordinates"]["lat"] .  "and long is = " . $data["entry"][0]["messaging"][0]["message"]["attachments"][0]["payload"]["coordinates"]["long"]);
+            $this->sendReply($id, "user is in lat= " . $data["entry"][0]["messaging"][0]["message"]["attachments"][0]["payload"]["coordinates"]["lat"]);
+            $this->sendReply($id, "user is in long= " .  $data["entry"][0]["messaging"][0]["message"]["attachments"][0]["payload"]["coordinates"]["long"]);
         }
 
-
+        //get the read status of the message
         // if (!empty($data["entry"][0]["messaging"][0]["read"]["watermark"])) {
         //        // $this->sendTextMessage($id, "ya 7aggar");
         //         $this->sendReply($id, "haha 9ritou lmessage");
@@ -92,6 +111,7 @@ class MainController extends Controller
 
 
 
+
     private function prepareReply($fb_id)
     {
         $post_data = ["recipient" => ["id" => $fb_id,], "sender_action" => "MARK_SEEN"];
@@ -99,6 +119,37 @@ class MainController extends Controller
         $post_data = ["recipient" => ["id" => $fb_id,], "sender_action" => "TYPING_ON"];
         $this->sendMessage($post_data);
     }
+
+    public function reply($data)
+    {
+        if (method_exists($data, "toMessengerMessage")) {
+            $data = $data->toMessengerMessage();
+        } else if (gettype($data) == "string") {
+            $data = ["text" => $data];
+        }
+        $id = $this->messaging->getSenderId();
+        $this->sendMessageToRecipient($id, $data);
+    }
+
+    private function sendMessageToRecipient($recipientId, $message)
+    {
+        $messageData = [
+            "recipient" => [
+                "id" => $recipientId
+            ],
+            "message" => $message
+        ];
+        $ch = curl_init('https://graph.facebook.com/v2.6/me/messages?access_token=' . env("PAGE_ACCESS_TOKEN"));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HEADER, false);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, ["Content-Type: application/json"]);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($messageData));
+        Log::info(print_r(curl_exec($ch), true));
+    }
+
+
+
     private function sendMessage($post_data)
     {
 
