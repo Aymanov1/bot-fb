@@ -17,16 +17,14 @@ class MainController extends Controller
     }
     public function receive(Request $request)
     {
-
-        $entries = Entry::getEntries($request);
-        Log::info(print_r($entries, true));
+        $entries = \App\Bot\Webhook\Entry::getEntries($request);
         foreach ($entries as $entry) {
             $messagings = $entry->getMessagings();
             foreach ($messagings as $messaging) {
-                dispatch(new BotHandler($messaging));
+                dispatch(new \App\Jobs\BotHandler($messaging));
             }
         }
-        return response("", 200);
+        return response();
     }
 
     public function multiFunction(Request $request)
